@@ -17,14 +17,16 @@ warnings.filterwarnings("ignore", category=RuntimeWarning)
 
 # Classe per la diagnostica del modello
 class ModelDiagnostics:
-    def __init__(self, X, y, coefficients, channels, additional_columns):
+    def __init__(self, X, y, coefficients, channels, additional_columns, feature_names):
         self.X = X
         self.y = y
         self.coefficients = coefficients
-        self.residuals = self.y - self.X @ self.coefficients
-        self.feature_names = ["Intercept"] + channels + additional_columns
-        self.n = len(self.y)  # Numero di osservazioni
-        self.p = self.X.shape[1]  # Numero di parametri (incluso l'intercetta)
+        self.channels = channels
+        self.additional_columns = additional_columns
+        self.residuals = y - X @ coefficients
+        self.n = len(y)  # Numero di osservazioni
+        self.p = X.shape[1]  # Numero di parametri (incluso l'intercetta)
+        self.feature_names = feature_names
 
     def calculate_metrics(self):
         """
@@ -91,7 +93,7 @@ class ModelDiagnostics:
             }
         )
 
-        return summary_df.sort_values(by="P-Value")
+        return summary_df
 
     def _calculate_covariance_matrix(self, residual_variance):
         """

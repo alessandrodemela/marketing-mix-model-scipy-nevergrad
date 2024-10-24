@@ -1,11 +1,11 @@
 # Marketing Mix Model Configuration
 
 # Target variable
-target: SellOut
+target: Sales
 
 # Channels for investment
 channels:
-  - name: Investimento_TV_15
+  - name: TV_Spend
     bounds: [0, None]
     is_active : True
     decay:
@@ -21,7 +21,7 @@ channels:
       init : 
       upper : 10
       lower : 0.001      
-  - name: Investimento_TV_30
+  - name: Radio_Spend
     bounds: [0.05, None]
     is_active : True
     decay:
@@ -37,7 +37,7 @@ channels:
       init : 
       upper : 10
       lower : 0.001      
-  - name: Investimento_Radio_30
+  - name: Digital_Spend
     bounds: [0, None]
     is_active : True
     decay:
@@ -53,109 +53,23 @@ channels:
       init : 
       upper : 10
       lower : 0.001  
-  - name: Investimento_Social
-    bounds: [0, None]
-    is_active : False
-    decay:
-      init : 0.5
-      upper : 0.99
-      lower : 0
-    saturation_type : 'hill'
-    k:
-      init : 
-      upper : 10
-      lower : 0.001
-    x0:
-      init : 
-      upper : 10
-      lower : 0.001  
-  - name: Investimento_Addressable_TV
-    bounds: [0, None]
-    is_active : False
-    decay:
-      init : 0.5
-      upper : 0.99
-      lower : 0
-    saturation_type : 'hill'
-    k:
-      init : 
-      upper : 10
-      lower : 0.001
-    x0:
-      init : 
-      upper : 10
-      lower : 0.001  
-  - name: Investimento_Video
-    bounds: [0, None]
-    is_active : False
-    decay:
-      init : 0.5
-      upper : 0.99
-      lower : 0
-    saturation_type : 'hill'
-    k:
-      init : 
-      upper : 10
-      lower : 0.001
-    x0:
-      init : 
-      upper : 10
-      lower : 0.001  
-  - name: Investimento_Display
-    bounds: [0, None]
-    is_active : False
-    decay:
-      init : 0.5
-      upper : 0.99
-      lower : 0
-    saturation_type : 'hill'
-    k:
-      init : 
-      upper : 10
-      lower : 0.001
-    x0:
-      init : 
-      upper : 10
-      lower : 0.001  
-  - name: Investimento_Digital
-    bounds: [0, None]
-    is_active : True
-    decay:
-      init : 0.5
-      upper : 0.99
-      lower : 0
-    saturation_type : 'hill'
-    k:
-      init : 
-      upper : 10
-      lower : 0.001
-    x0:
-      init : 
-      upper : 10
-      lower : 0.001  
-
+ 
 # Additional columns and their bounds
 additional_columns:
-  - name: Investimento_Competitors
+  - name: Competitor_Spend
     bounds: [None, None]
-    is_active : False
-  - name: PROMO__PromoPressure
-    bounds: [5000, None]
-    is_active : True
-  - name: PRICE__AvgPriceVar
-    bounds: [None, 0]
-    is_active : False
-  - name: DISTR_NumericDistribution_VarCompetition
+    is_active : true
+  - name: Promo_Pressure
     bounds: [0, None]
-    is_active : False
-  - name: Holiday
-    bounds: [None, None]
     is_active : True
-  - name: SellOut_seasonal
+  - name: COVID_Effect
+    bounds: [100, 200]
+    is_active : True
+  - name: Sales_seasonal
     bounds: [0, None]
     is_active : True
 
 # Baseline bounds
 baseline:
-  bounds: [13000, None]
+  bounds: [0, None]
   is_active : True
