@@ -3,7 +3,7 @@
 This repository contains a Python implementation of Marketing Mix Modeling, a statistical analysis method used to determine the effectiveness of marketing investments across various channels.
 
 ## Project Structure
-'''
+```markdown
 │   README.md
 │   requirements.txt
 │
@@ -26,7 +26,7 @@ This repository contains a Python implementation of Marketing Mix Modeling, a st
 │   │   │   helper.py
 └───tests
         unit_tests.py
-'''
+```
 
 ## Key Components
 
@@ -61,14 +61,16 @@ This repository contains a Python implementation of Marketing Mix Modeling, a st
 
 1. Clone the repository:
 
-'''bash
+```bash
 git clone https://github.com/yourusername/marketing_mix_model_scipy_nevergrad.git
 cd marketing_mix_model_scipy_nevergrad
-'''
+```
 
 1. Install required packages
 
-```pip install -r requirements.txt```
+```bash
+pip install -r requirements.txt
+```
 
 ## Usage
 
