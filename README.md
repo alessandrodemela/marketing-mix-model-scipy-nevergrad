@@ -3,6 +3,7 @@
 This repository contains a Python implementation of Marketing Mix Modeling, a statistical analysis method used to determine the effectiveness of marketing investments across various channels.
 
 ## Project Structure
+'''
 │   README.md
 │   requirements.txt
 │
@@ -25,41 +26,7 @@ This repository contains a Python implementation of Marketing Mix Modeling, a st
 │   │   │   helper.py
 └───tests
         unit_tests.py
-
-
-## Key Components
-
-1. **Data Transformer (`data_transformer.py`)**  
-   Handles data transformations essential for MMM:
-   - Adstock transformation: Models the delayed effect of marketing activities.
-   - Saturation effects: Models diminishing returns using Hill and Sigmoid functions.
-   - Customizable decay rates and saturation parameters.
-
-2. **Model Optimizer (`model_optimizer.py`)**  
-   Core optimization module that:
-   - Loads configuration from YAML files.
-   - Optimizes model parameters using Nevergrad's CMA-ES algorithm.
-   - Manages feature transformations and coefficient estimation.
-   - Provides visualization tools for model results.
-
-3. **Model Diagnostics (`model_diagnostics.py`)**  
-   Comprehensive model evaluation tools:
-   - Calculates key metrics (R², Adjusted R², RMSE, MAPE).
-   - Performs regression diagnostics.
-   - Generates confidence intervals.
-   - Creates autocorrelation plots.
-
-4. **Helper Functions (`helper.py`)**  
-   Utility functions for:
-   - Exploratory Data Analysis (EDA).
-   - Marketing channel visualization.
-   - Seasonality analysis.
-   - Multicollinearity checks.
-
-## Installation
-
-Clone the repository:
-
+'''
 
 ## Key Components
 
@@ -94,7 +61,7 @@ Clone the repository:
 
 1. Clone the repository:
 
-'''
+'''bash
 git clone https://github.com/yourusername/marketing_mix_model_scipy_nevergrad.git
 cd marketing_mix_model_scipy_nevergrad
 '''
