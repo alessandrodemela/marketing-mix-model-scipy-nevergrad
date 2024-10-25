@@ -114,10 +114,9 @@ class ModelOptimizer:
         adstock e saturazione a ogni canale.
         """
         transformed_data = data.copy()
+        adstocked_data = data.copy()
         for channel in self.channels:
-            transformed_data[
-                f"{channel}_transformed"
-            ] = self.transformer.apply_transformations(
+            adstocked, saturated = self.transformer.apply_transformations(
                 data,
                 channel,
                 params[f"{channel}_decay"],
@@ -125,6 +124,10 @@ class ModelOptimizer:
                 params[f"{channel}_k"],
                 params[f"{channel}_x0"],
             )
+            transformed_data[f"{channel}_transformed"] = saturated
+            adstocked_data[f"{channel}_adstocked"] = adstocked
+
+        self.adstocked_data = adstocked_data
         return transformed_data
 
     def objective_function(self, params, data, init=None):
@@ -132,13 +135,13 @@ class ModelOptimizer:
         Funzione obiettivo che minimizza la somma dei quadrati
         degli errori (SSE).
         """
+        self.y = data[self.target].values
         transformed_data = self.prepare_data(data, params)
 
         self.X = transformed_data[
             [f"{channel}_transformed" for channel in self.channels]
             + self.additional_columns
         ].values
-        self.y = transformed_data[self.target].values
         self.X = np.column_stack((np.ones(self.X.shape[0]), self.X))
 
         initial_coeffs = init if init is not None else np.zeros(self.X.shape[1])
@@ -195,6 +198,9 @@ class ModelOptimizer:
                 if col["is_active"]
             ]
             self.feature_names = ['Baseline'] + self.channels + self.additional_columns
+
+            print(f'\nRemoved Feature(s) {zero_columns.to_list()}')
+            self.print_infos()
         
         # Analizza i bounds
         self.bounds = self.parse_bounds()
@@ -202,9 +208,6 @@ class ModelOptimizer:
         # Update param_space to remove zero-valued features
         self.param_space = {
             k: v for k, v in self.param_space.items() if k not in zero_columns}
-
-        print(f'\nRemoved Feature(s) {zero_columns.to_list()}')
-        self.print_infos()
 
         # Update the index date for optimization
         self.index_date = data.index
@@ -301,3 +304,46 @@ class ModelOptimizer:
         plt.tight_layout()
         plt.show()
         
+    def plot_saturation_curves(self):
+        """
+        Plots the saturation curves for each channel showing both raw and adstock-transformed curves.
+        """
+        num_channels = len(self.channels)
+        fig, axes = plt.subplots(num_channels, 1, figsize=(12, 6 * num_channels))
+        if num_channels == 1:
+            axes = [axes]
+
+        data_tmp = pd.DataFrame(self.X, 
+                                columns=self.feature_names, 
+                                index=self.index_date)
+
+        for i, channel in enumerate(self.channels):
+            k = self.params[f"{channel}_k"].value
+            x0 = self.params[f"{channel}_x0"].value
+            sat_type = self.params[f"{channel}_saturation_type"].value
+
+            # Generate range of spend values
+            max_spend = self.adstocked_data[channel+'_adstocked'].max()
+            x_values = np.linspace(0, max_spend, data_tmp.shape[0])
+            
+            print(channel, max_spend)
+
+            y_values = self.transformer.hill(
+                x_values, 
+                k, 
+                x0)
+            axes[i].scatter(x=x_values, y=y_values)
+
+            # Add average spend line
+            avg_spend = data_tmp[channel][data_tmp[channel] > 0].mean()
+            axes[i].axvline(x=avg_spend, color='red', linestyle=':', 
+                        label='Average Spend')
+
+            axes[i].set_title(f'Saturation Curve for {channel}')
+            axes[i].set_xlabel('Spend')
+            axes[i].set_ylabel('Response')
+            axes[i].legend()
+            axes[i].grid(True)
+
+        plt.tight_layout()
+        plt.show()
