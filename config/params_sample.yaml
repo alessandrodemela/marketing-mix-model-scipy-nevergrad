@@ -1,0 +1,69 @@
+# Marketing Mix Model Configuration
+
+# Target variable
+target: Sales
+
+# Channels for investment
+channels:
+  - name: TV_Spend
+    bounds: [0.46, 0.47]
+    is_active : True
+    decay:
+      init : 0.0
+      upper : 0.99
+      lower : 0
+    saturation_type : 'hill'
+    k:
+      init : 2.41
+      upper : 2.42
+      lower : 2.40
+    x0:
+      init : 100
+      upper : 95
+      lower : 105      
+  - name: Radio_Spend
+    bounds: [0.41, 0.42]
+    is_active : True
+    decay:
+      init : 0.5
+      upper : 0.99
+      lower : 0
+    saturation_type : 'hill'
+    k:
+      init : 3.23
+      upper : 3.20
+      lower : 3.25
+    x0:
+      init : 80
+      upper : 75
+      lower : 85      
+  - name: Digital_Spend
+    bounds: [0.27, 0.28]
+    is_active : True
+    decay:
+      init : 0.1
+      upper : 0.2
+      lower : 0
+    saturation_type : 'hill'
+    k:
+      init : 1.41
+      upper : 1.40
+      lower : 1.42
+    x0:
+      init : 315
+      upper : 305
+      lower : 320  
+ 
+# Additional columns and their bounds
+additional_columns:
+  - name: Average_Promo
+    bounds: [0.48, 0.49]
+    is_active : True
+  - name: Seasonality
+    bounds: [10, 20]
+    is_active : True
+
+# Baseline bounds
+baseline:
+  bounds: [4900, 5100]
+  is_active : True
